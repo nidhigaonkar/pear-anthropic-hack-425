@@ -3,6 +3,7 @@ from datetime import datetime
 import os
 from flask_cors import CORS
 import requests
+import subprocess
 
 app = Flask(__name__)
 CORS(app)
@@ -54,7 +55,7 @@ def get_relevant_subreddits(description):
             "content-type": "application/json"
         },
         json={
-            "model": "claude-3-haiku-20240307",
+            "model": "claude-3-7-sonnet-20250219",
             "max_tokens": 256,
             "messages": [
                 {"role": "user", "content": prompt}
@@ -81,6 +82,11 @@ def find_subreddits():
         with open(filepath, 'w', encoding='utf-8') as f:
             f.write(subreddits)
         print(f"Saved subreddits to {filepath}")
+        if not os.path.exists("test_generate.py"):
+            print("Warning: test_generate.py does not exist in the current directory")
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        test_generate_path = os.path.join(script_dir, "test_generate.py")
+        subprocess.run(["python", test_generate_path])
         return jsonify({'success': True, 'subreddits': subreddits.splitlines(), 'filename': filename})
     except Exception as e:
         return jsonify({'success': False, 'message': str(e)}), 500
