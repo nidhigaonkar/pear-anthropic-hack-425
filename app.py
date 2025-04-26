@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from datetime import datetime
 import os
 from flask_cors import CORS
@@ -10,6 +10,16 @@ CORS(app)
 # Directory to save submissions
 data_dir = 'submissions'
 os.makedirs(data_dir, exist_ok=True)
+
+# Route to serve the main page
+@app.route('/')
+def index():
+    return send_from_directory('.', 'index.html')
+
+# Route to serve the JavaScript file
+@app.route('/script.js')
+def serve_script():
+    return send_from_directory('.', 'script.js')
 
 @app.route('/submit', methods=['POST'])
 def submit():
@@ -28,7 +38,7 @@ def submit():
     return jsonify({'success': True, 'message': 'Submission saved.'})
 
 # Anthropic API key
-ANTHROPIC_API_KEY = 
+ANTHROPIC_API_KEY =
 
 def get_relevant_subreddits(description):
     prompt = (
