@@ -115,7 +115,7 @@ def reply_and_post(subreddit_list):
                     
                 # Wait 2 minutes between comments to avoid rate limits
                 print("Waiting 2 minutes before next comment...")
-               # time.sleep(120)  # 2 minutes
+                time.sleep(120)  # 2 minutes
                 
             except Exception as e:
                 if "RATELIMIT" in str(e):
