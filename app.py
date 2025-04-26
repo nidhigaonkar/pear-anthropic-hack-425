@@ -38,7 +38,7 @@ def submit():
     return jsonify({'success': True, 'message': 'Submission saved.'})
 
 # Anthropic API key
-ANTHROPIC_API_KEY =
+ANTHROPIC_API_KEY = os.environ.get('API_KEY')
 
 def get_relevant_subreddits(description):
     prompt = (
@@ -54,7 +54,7 @@ def get_relevant_subreddits(description):
             "content-type": "application/json"
         },
         json={
-            "model": "claude-3-haiku-20240307",
+            "model": "claude-3-7-sonnet-20250219",
             "max_tokens": 256,
             "messages": [
                 {"role": "user", "content": prompt}
