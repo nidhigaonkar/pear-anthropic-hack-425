@@ -11,9 +11,25 @@ CORS(app)
 data_dir = 'submissions'
 os.makedirs(data_dir, exist_ok=True)
 
-# Anthropic API key (replace with your real key)
-ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY") 
-# Helper function to get subreddits from Claude
+@app.route('/submit', methods=['POST'])
+def submit():
+    data = request.get_json()
+    user_input = data.get('description', '').strip()
+    if not user_input:
+        return jsonify({'success': False, 'message': 'No description provided.'}), 400
+
+    timestamp = datetime.now().strftime('%Y-%m-%dT%H-%M-%S')
+    filename = f'startup-description-{timestamp}.txt'
+    filepath = os.path.join(data_dir, filename)
+
+    with open(filepath, 'w', encoding='utf-8') as f:
+        f.write(f"Startup Description\n\n{user_input}\n\nSubmitted on: {datetime.now().isoformat()}")
+
+    return jsonify({'success': True, 'message': 'Submission saved.'})
+
+# Anthropic API key
+ANTHROPIC_API_KEY = 
+
 def get_relevant_subreddits(description):
     prompt = (
         "Given the following startup description, list 5-10 relevant subreddits where the founders could find potential customers. "
@@ -40,22 +56,6 @@ def get_relevant_subreddits(description):
     # Extract the text from the response (adjust if API response format changes)
     return data["content"][0]["text"].strip()
 
-@app.route('/submit', methods=['POST'])
-def submit():
-    data = request.get_json()
-    user_input = data.get('description', '').strip()
-    if not user_input:
-        return jsonify({'success': False, 'message': 'No description provided.'}), 400
-
-    timestamp = datetime.now().strftime('%Y-%m-%dT%H-%M-%S')
-    filename = f'startup-description-{timestamp}.txt'
-    filepath = os.path.join(data_dir, filename)
-
-    with open(filepath, 'w', encoding='utf-8') as f:
-        f.write(f"Startup Description\n\n{user_input}\n\nSubmitted on: {datetime.now().isoformat()}")
-
-    return jsonify({'success': True, 'message': 'Submission saved.'})
-
 @app.route('/find_subreddits', methods=['POST'])
 def find_subreddits():
     data = request.get_json()
@@ -70,7 +70,8 @@ def find_subreddits():
         filepath = os.path.join(data_dir, filename)
         with open(filepath, 'w', encoding='utf-8') as f:
             f.write(subreddits)
-        return jsonify({'success': True, 'subreddits': subreddits.split('\n'), 'filename': filename})
+        print(f"Saved subreddits to {filepath}")
+        return jsonify({'success': True, 'subreddits': subreddits.splitlines(), 'filename': filename})
     except Exception as e:
         return jsonify({'success': False, 'message': str(e)}), 500
 
