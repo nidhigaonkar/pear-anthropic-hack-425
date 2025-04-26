@@ -3,27 +3,25 @@ from unittest.mock import patch, MagicMock
 import sys
 import generate
 
+import glob
+
+def get_latest_file(pattern):
+   files = glob.glob(pattern)
+   if not files:
+       raise FileNotFoundError(f"No files found for pattern: {pattern}")
+   return max(files, key=os.path.getctime)
+
 # Create a mock business_info.txt file for testing
-test_business_info = """
-ProductName: CodeAssist AI
-Description: An AI-powered coding assistant that helps developers write better code faster.
-Features:
-- Real-time code suggestions
-- Bug detection and fixing
-- Code optimization recommendations
-- Integration with popular IDEs like VS Code, IntelliJ, and PyCharm
-- Support for multiple programming languages including Python, JavaScript, Java, and C++
-
-Our product helps developers save time, reduce errors, and learn best practices while coding.
-Website: https://codeassist-ai.example.com
-Pricing: Free tier available, Pro plan at $9.99/month
-"""
-
+test_business_info = get_latest_file("submissions/startup-description-*.txt")
 # Create the test business info file
 with open("business_info.txt", "w") as f:
-    f.write(test_business_info)
+   f.write(test_business_info)
+# ... previous code ...
 
-subreddits_to_test = ["learnpython", "Python", "coding"]
+# Get the most recent subreddits file and turn it into a list
+subreddits_file = get_latest_file("submissions/subreddits-*.txt")
+with open(subreddits_file, "r") as f:
+   subreddits_to_test = [line.strip()[2:] for line in f if line.strip() and not line.startswith("#")]
 
 print(f"Testing reply_and_post with subreddits: {', '.join(subreddits_to_test)}")
 
@@ -31,3 +29,5 @@ print(f"Testing reply_and_post with subreddits: {', '.join(subreddits_to_test)}"
 generate.reply_and_post(subreddits_to_test)
 
 print("Test completed")
+
+
