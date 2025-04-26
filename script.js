@@ -5,6 +5,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Create a container for subreddit results
     let subredditList = document.createElement('ul');
     subredditList.id = 'subreddit-list';
+    subredditList.style.listStyle = 'none';
+    subredditList.style.padding = '0';
     document.querySelector('.container').appendChild(subredditList);
 
     form.addEventListener('submit', async (e) => {
@@ -45,7 +47,27 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (subResult.subreddits && subResult.subreddits.length > 0) {
                         subResult.subreddits.forEach(sub => {
                             const li = document.createElement('li');
-                            li.textContent = sub;
+                            li.style.marginBottom = '10px';
+                            
+                            const link = document.createElement('a');
+                            // Remove any existing r/ prefix and add it back
+                            const subName = sub.replace(/^r\//, '');
+                            link.href = `https://reddit.com/r/${subName}`;
+                            link.target = '_blank';
+                            link.textContent = sub;
+                            link.style.color = '#10a37f';
+                            link.style.textDecoration = 'none';
+                            link.style.fontWeight = '500';
+                            
+                            link.addEventListener('mouseover', () => {
+                                link.style.textDecoration = 'underline';
+                            });
+                            
+                            link.addEventListener('mouseout', () => {
+                                link.style.textDecoration = 'none';
+                            });
+                            
+                            li.appendChild(link);
                             subredditList.appendChild(li);
                         });
                     } else {
