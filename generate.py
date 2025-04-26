@@ -90,31 +90,32 @@ def reply_and_post(subreddit_list):
         for submission in posts_to_process:
             try:
                 print(f"\nAnalyzing post: '{submission.title}'")
+
+                if (not should_reply_to_post(submission.title, submission.selftext, business_info)):
+                    print(f"Skipping post - not relevant to our business: {submission.title}")
+                    continue
                 
                 # Check if we should reply to this post
-                if should_reply_to_post(submission.title, submission.selftext, business_info):
-                    print(f"Post is relevant. Generating reply for: {submission.title}")
+               # if should_reply_to_post(submission.title, submission.selftext, business_info):
+                print(f"Post is relevant. Generating reply for: {submission.title}")  
+                # Generate reply using Claude
+                reply_text = generate_reply(submission.title, submission.selftext, subreddit_name)
                     
-                    # Generate reply using Claude
-                    reply_text = generate_reply(submission.title, submission.selftext, subreddit_name)
+                # Post the reply
+                submission.reply(reply_text)
+                print(f"Replied to: {submission.title}")
                     
-                    # Post the reply
-                    submission.reply(reply_text)
-                    print(f"Replied to: {submission.title}")
+                # Remember we replied to this post
+                posts_replied_to.append(submission.id)
                     
-                    # Remember we replied to this post
-                    posts_replied_to.append(submission.id)
+                # Save progress after each successful reply
+                with open("posts_replied_to.txt", "w") as f:
+                    for post_id in posts_replied_to:
+                        f.write(post_id + "\n")
                     
-                    # Save progress after each successful reply
-                    with open("posts_replied_to.txt", "w") as f:
-                        for post_id in posts_replied_to:
-                            f.write(post_id + "\n")
-                    
-                    # Wait 2 minutes between comments to avoid rate limits
-                    print("Waiting 2 minutes before next comment...")
-                    time.sleep(120)  # 2 minutes
-                else:
-                    print(f"Skipping post - not relevant to our business: {submission.title}")
+                # Wait 2 minutes between comments to avoid rate limits
+                print("Waiting 2 minutes before next comment...")
+               # time.sleep(120)  # 2 minutes
                 
             except Exception as e:
                 if "RATELIMIT" in str(e):
