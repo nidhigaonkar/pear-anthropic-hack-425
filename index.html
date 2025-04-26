@@ -4,93 +4,381 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Describe Your Startup</title>
+    <title>RedditTarget | Find Your Ideal Customers</title>
     <style>
-        /* Modern font stack and base styles */
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background-color: #f9f9f9;
+        /* Modern font imports */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+        /* Reset and base styles */
+        * {
             margin: 0;
             padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
+            box-sizing: border-box;
         }
 
-        /* Main container */
+        :root {
+            --primary: #3a1c71;
+            --secondary: #4776e6;
+            --accent: #8e54e9;
+            --neon: #00f2fe;
+            --text: #f8f9fa;
+            --text-secondary: #b8c2cc;
+            --bg-dark: #0f0f1a;
+            --bg-card: #1a1a2e;
+            --gradient: linear-gradient(135deg, #3a1c71 0%, #4776e6 50%, #8e54e9 100%);
+            --gradient-hover: linear-gradient(135deg, #331a63 0%, #3d68cc 50%, #7e4bd0 100%);
+            --shadow: 0 10px 30px rgba(46, 54, 233, 0.15);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
         .container {
             width: 100%;
-            max-width: 650px;
-            padding: 2rem;
-            background-color: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
         }
 
-        /* Heading */
-        h1 {
-            font-size: 1.75rem;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-            color: #111;
+        /* Header styles */
+        header {
+            padding: 24px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-weight: 800;
+            font-size: 24px;
+            color: var(--text);
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient);
+            border-radius: 8px;
+            margin-right: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 20px;
+        }
+
+        /* Hero section */
+        .hero {
+            padding: 80px 0 60px;
             text-align: center;
         }
 
-        /* Textarea styling */
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 16px;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            line-height: 1.2;
+        }
+
+        .subheading {
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto 40px;
+        }
+
+        /* Form section */
+        .form-container {
+            background-color: var(--bg-card);
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: var(--shadow);
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .form-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient);
+        }
+
+        .form-heading {
+            font-size: 1.75rem;
+            margin-bottom: 24px;
+            font-weight: 700;
+            text-align: center;
+        }
+
         textarea {
             width: 100%;
             min-height: 180px;
-            padding: 1rem;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 1rem;
+            padding: 16px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background-color: rgba(255, 255, 255, 0.05);
+            color: var(--text);
             font-family: inherit;
+            font-size: 1rem;
             resize: vertical;
-            box-sizing: border-box;
-            margin-bottom: 1.5rem;
-            transition: border-color 0.2s ease;
+            transition: all 0.3s ease;
+            margin-bottom: 24px;
         }
 
         textarea:focus {
             outline: none;
-            border-color: #666;
-            box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.05);
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(142, 84, 233, 0.2);
         }
 
-        /* Button styling */
-        button {
-            display: block;
-            width: 100%;
-            max-width: 200px;
-            margin: 0 auto;
-            padding: 0.75rem 1.5rem;
-            background-color: #10a37f;
+        .submit-btn {
+            background: var(--gradient);
             color: white;
             border: none;
-            border-radius: 6px;
-            font-size: 1rem;
-            font-weight: 500;
+            padding: 16px 32px;
+            font-size: 1.125rem;
+            font-weight: 600;
+            border-radius: 12px;
             cursor: pointer;
-            transition: background-color 0.2s ease;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 200px;
         }
 
-        button:hover {
-            background-color: #0d8c6d;
+        .submit-btn:hover {
+            background: var(--gradient-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(46, 54, 233, 0.25);
         }
 
-        button:focus {
-            outline: none;
-            box-shadow: 0 0 0 2px rgba(16, 163, 127, 0.3);
+        .submit-btn:active {
+            transform: translateY(0);
         }
 
-        /* Responsive adjustments */
-        @media (max-width: 700px) {
-            .container {
-                padding: 1.5rem;
-                margin: 1rem;
+        /* Results section */
+        .results-section {
+            margin-top: 60px;
+            display: none;
+        }
+
+        .results-heading {
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .subreddit-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .subreddit-card {
+            background-color: var(--bg-card);
+            border-radius: 12px;
+            padding: 24px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .subreddit-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+            border-color: var(--accent);
+        }
+
+        .subreddit-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--neon);
+        }
+
+        .subreddit-members {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+
+        .subreddit-desc {
+            font-size: 0.9375rem;
+            color: var(--text-secondary);
+        }
+
+        .relevance {
+            display: inline-block;
+            padding: 4px 12px;
+            background: rgba(142, 84, 233, 0.2);
+            color: var(--accent);
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-top: 16px;
+        }
+
+        /* Features section */
+        .features {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 60px;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 32px;
+        }
+
+        .feature-card {
+            background-color: var(--bg-card);
+            border-radius: 16px;
+            padding: 32px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+        }
+
+        .feature-icon {
+            width: 64px;
+            height: 64px;
+            background: var(--gradient);
+            border-radius: 50%;
+            margin: 0 auto 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .feature-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .feature-desc {
+            color: var(--text-secondary);
+            font-size: 0.9375rem;
+        }
+
+        .button-center {
+            text-align: center;
+        }
+
+        /* Footer */
+        footer {
+            padding: 40px 0;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            margin-top: 40px;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate {
+            animation: fadeIn 0.6s ease forwards;
+        }
+
+        /* Loading spinner */
+        .spinner {
+            display: none;
+            width: 24px;
+            height: 24px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .subheading {
+                font-size: 1.25rem;
+            }
+
+            .form-container {
+                padding: 30px 20px;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .subreddit-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .hero {
+                padding: 60px 0 40px;
+            }
+
+            .submit-btn {
+                width: 100%;
             }
         }
     </style>
@@ -98,14 +386,75 @@
 
 <body>
     <div class="container">
-        <h1>Describe Your Startup</h1>
-        <form>
-            <textarea placeholder="Tell us about your startup, what problem it solves, and who it's for..."
-                aria-label="Startup description"></textarea>
-            <button type="submit">Submit</button>
-        </form>
+        <header>
+            <a href="#" class="logo">
+                <div class="logo-icon">:)</div>
+                MyFirst100
+            </a>
+        </header>
+
+        <section class="hero">
+            <h1>Find Your Perfect Audience</h1>
+            <p class="subheading">Find your first 100 customers by discovering and interacting with the communities
+                where they're
+                already hanging out</p>
+        </section>
+
+        <section class="form-container">
+            <h2 class="form-heading">Describe your startup</h2>
+            <form id="startupForm">
+                <textarea id="startupDescription"
+                    placeholder="Tell us about your startup, what problem it solves, and who it's for..."
+                    required></textarea>
+                <div class="button-center">
+                    <button type="submit" class="submit-btn">
+                        <span class="spinner" id="submitSpinner"></span>
+                        <span>Find My Audience</span>
+                    </button>
+                </div>
+            </form>
+        </section>
+
+        <section class="results-section" id="resultsSection">
+            <h2 class="results-heading">Recommended Subreddits</h2>
+            <div class="subreddit-grid" id="subredditGrid">
+                <!-- Subreddit cards will be inserted here -->
+            </div>
+        </section>
+
+        <section class="features">
+            <h2 class="section-title">Why MyFirst100 Works</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3 class="feature-title">Precision Targeting</h3>
+                    <p class="feature-desc">Our AI analyzes thousands of subreddits to find the perfect match for your
+                        specific product and audience.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3 class="feature-title">Engagement Analytics</h3>
+                    <p class="feature-desc">Get detailed insights on community engagement, posting patterns, and content
+                        performance.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🚀</div>
+                    <h3 class="feature-title">Growth Strategy</h3>
+                    <p class="feature-desc">Receive customized strategies for approaching each community authentically
+                        to maximize conversions.</p>
+                </div>
+            </div>
+        </section>
     </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 MyFirst100. All rights reserved.</p>
+        </div>
+    </footer>
+
     <script src="script.js"></script>
+
 </body>
 
 </html>
