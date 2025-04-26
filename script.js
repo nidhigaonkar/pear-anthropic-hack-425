@@ -9,6 +9,62 @@ document.addEventListener('DOMContentLoaded', () => {
     subredditList.style.padding = '0';
     document.querySelector('.container').appendChild(subredditList);
 
+    // Create a container for comment history
+    const commentHistoryContainer = document.createElement('div');
+    commentHistoryContainer.id = 'comment-history';
+    commentHistoryContainer.innerHTML = `
+        <h3>Comment History</h3>
+        <ul id="comment-list" style="list-style: none; padding: 0;"></ul>
+    `;
+    document.querySelector('.container').appendChild(commentHistoryContainer);
+
+    // Function to fetch and update comment history
+    async function updateCommentHistory() {
+        try {
+            const response = await fetch('http://127.0.0.1:5000/comment_history');
+            const result = await response.json();
+            
+            if (response.ok && result.success) {
+                const commentList = document.getElementById('comment-list');
+                commentList.innerHTML = '';
+                
+                if (result.comments && result.comments.length > 0) {
+                    result.comments.forEach(comment => {
+                        const li = document.createElement('li');
+                        li.style.marginBottom = '10px';
+                        
+                        const commentLink = document.createElement('a');
+                        commentLink.href = comment.comment_url;
+                        commentLink.target = '_blank';
+                        commentLink.textContent = `Replied to: ${comment.post_title} in r/${comment.subreddit}`;
+                        commentLink.style.color = '#10a37f';
+                        commentLink.style.textDecoration = 'none';
+                        commentLink.style.fontWeight = '500';
+                        
+                        commentLink.addEventListener('mouseover', () => {
+                            commentLink.style.textDecoration = 'underline';
+                        });
+                        
+                        commentLink.addEventListener('mouseout', () => {
+                            commentLink.style.textDecoration = 'none';
+                        });
+                        
+                        li.appendChild(commentLink);
+                        commentList.appendChild(li);
+                    });
+                } else {
+                    commentList.innerHTML = '<li>No comments posted yet.</li>';
+                }
+            }
+        } catch (error) {
+            console.error('Failed to fetch comment history:', error);
+        }
+    }
+
+    // Update comment history initially and every 30 seconds
+    updateCommentHistory();
+    setInterval(updateCommentHistory, 30000);
+
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
 

@@ -1,5 +1,0 @@
-Startup Description
-
-FocusFuel is an AI-powered focus management platform that helps remote teams eliminate distractions and maintain deep-work flow. By integrating with Slack, Trello, and Google Calendar, FocusFuel automatically schedules “focus sessions,” blocks non-essential apps during those windows, and gently nudges users to take micro-breaks when energy dips. Built for distributed teams, freelancers, and knowledge-workers, FocusFuel ensures you spend less time context-switching and more time doing your best work—without burning out.
-
-Submitted on: 2025-04-26T14:08:20.466752

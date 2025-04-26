@@ -29,5 +29,3 @@ print(f"Testing reply_and_post with subreddits: {', '.join(subreddits_to_test)}"
 generate.reply_and_post(subreddits_to_test)
 
 print("Test completed")
-
-

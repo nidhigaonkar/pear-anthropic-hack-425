@@ -7,6 +7,12 @@ from prawcore.exceptions import RequestException, ResponseException
 #Creating the Reddit instance
 reddit = praw.Reddit('bot1')
 
+comment_history = []
+
+# Add this function to generate.py
+def get_comment_history():
+    return comment_history
+
 #A file that consists of already made posts
 if not os.path.isfile("posts_replied_to.txt"):
     posts_replied_to = []
@@ -80,7 +86,7 @@ def reply_and_post(subreddit_list):
         
         # Get 200 most recent posts
         posts_to_process = []
-        for submission in subreddit.new(limit=200):
+        for submission in subreddit.new(limit=1):
             if submission.id not in posts_replied_to:
                 posts_to_process.append(submission)
         
@@ -102,8 +108,19 @@ def reply_and_post(subreddit_list):
                 reply_text = generate_reply(submission.title, submission.selftext, subreddit_name)
                     
                 # Post the reply
+                comment = submission.reply(reply_text)
                 submission.reply(reply_text)
                 print(f"Replied to: {submission.title}")
+
+                # Record this comment in our history
+                comment_info = {
+                    "subreddit": subreddit_name,
+                    "post_title": submission.title,
+                    "post_url": submission.url,
+                    "comment_url": f"https://reddit.com{comment.permalink}",
+                    "timestamp": time.time()
+                }
+                comment_history.append(comment_info)
                     
                 # Remember we replied to this post
                 posts_replied_to.append(submission.id)
@@ -115,7 +132,7 @@ def reply_and_post(subreddit_list):
                     
                 # Wait 2 minutes between comments to avoid rate limits
                 print("Waiting 2 minutes before next comment...")
-                time.sleep(120)  # 2 minutes
+                #time.sleep(120)  # 2 minutes
                 
             except Exception as e:
                 if "RATELIMIT" in str(e):
