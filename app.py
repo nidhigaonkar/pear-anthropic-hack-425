@@ -54,7 +54,7 @@ def get_relevant_subreddits(description):
             "content-type": "application/json"
         },
         json={
-            "model": "claude-3-7-sonnet-20250219",
+            "model": "claude-3-haiku-20240307",
             "max_tokens": 256,
             "messages": [
                 {"role": "user", "content": prompt}
