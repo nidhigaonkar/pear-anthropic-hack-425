@@ -2,16 +2,34 @@ from anthropic import Anthropic
 import praw
 import os
 import time
+import glob
 from prawcore.exceptions import RequestException, ResponseException
 
 #Creating the Reddit instance
-reddit = praw.Reddit('bot1')
+reddit = praw.Reddit(
+    client_id="SITjwfe4soiIOutFoo5SfA",
+    client_secret="Fc7wjMbrt2FL4DFfYhWGWUj5aS_ljA",
+    username="Cute_Philosopher_745",
+    password="a1b2c3d4",
+    user_agent="script:your_app_name:v1.0 (by /u/Cute_Philosopher_745)"
+)
+
+print(reddit.user.me())
 
 comment_history = []
 
 # Add this function to generate.py
 def get_comment_history():
     return comment_history
+
+def get_latest_file(pattern):
+   files = glob.glob(pattern)
+   if not files:
+       raise FileNotFoundError(f"No files found for pattern: {pattern}")
+   return max(files, key=os.path.getctime)
+
+# Create a mock business_info.txt file for testing
+startup_info = get_latest_file("submissions/startup-description-*.txt")
 
 #A file that consists of already made posts
 if not os.path.isfile("posts_replied_to.txt"):
@@ -25,16 +43,16 @@ else:
 anthropic = Anthropic(api_key=os.environ.get('API_KEY'))
 
 # Load business information
-with open("business_info.txt", "r") as f:
+with open(startup_info, "r") as f:
     business_info = f.read()
 
 def should_reply_to_post(post_title, post_content, business_info):
     """Determine if we should reply to this post based on its relevance to our business."""
     prompt = f"""
-    Analyze this Reddit post and determine if we should reply to it. Consider if:
-    1. The post discusses problems or needs that our product could help with
-    2. The post is from someone who could benefit from our product
-    3. We can provide genuine value in our response
+    Analyze this Reddit post and determine if replying would be beneficial for our business. Consider the following:
+    1. Does the post discuss challenges or needs that our product could help address?
+    2. Is the poster someone who could benefit from our product or service?
+    3. Can we provide genuine value in our response while subtly mentioning our product, only when it directly relates to their needs or situation?
     
     Business information:
     {business_info}
@@ -56,9 +74,11 @@ def should_reply_to_post(post_title, post_content, business_info):
 
 def generate_reply(post_title, post_content, subreddit_name):
     prompt = f"""
-    You are a helpful assistant for a business. Based on the following business information,
-    generate a helpful, authentic-sounding reply to this Reddit post. The reply should be
-    helpful first and only subtly mention the product if relevant.
+   You are a helpful assistant for a business. Based on the following business information, 
+   generate a reply to this Reddit post that is informative and genuinely helpful. The reply 
+   should focus on offering useful advice or solutions first, and make sure to mention the specific 
+   product name as inputed by the user aswell as the given link provided and show how it directly adds value to the response. 
+   Make sure the tone is human, authentic and empathetic to the original poster's situation. Don't be too long, a 150 word limit.
     
     Business information:
     {business_info}
@@ -130,9 +150,9 @@ def reply_and_post(subreddit_list):
                     for post_id in posts_replied_to:
                         f.write(post_id + "\n")
                     
-                # Wait 2 minutes between comments to avoid rate limits
+                # Wait 5 minutes between comments to avoid rate limits
                 print("Waiting 2 minutes before next comment...")
-                #time.sleep(120)  # 2 minutes
+                time.sleep(300)  # 5 minutes
                 
             except Exception as e:
                 if "RATELIMIT" in str(e):

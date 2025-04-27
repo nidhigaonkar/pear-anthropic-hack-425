@@ -47,25 +47,31 @@ def get_relevant_subreddits(description):
         "Return only the subreddit names, one per line, no extra text.\n\n"
         f"Startup Description:\n{description}\n\nSubreddits:"
     )
-    response = requests.post(
-        "https://api.anthropic.com/v1/messages",
-        headers={
-            "x-api-key": ANTHROPIC_API_KEY,
-            "anthropic-version": "2023-06-01",
-            "content-type": "application/json"
-        },
-        json={
-            "model": "claude-3-haiku-20240307",
-            "max_tokens": 256,
-            "messages": [
-                {"role": "user", "content": prompt}
-            ]
-        }
-    )
-    response.raise_for_status()
-    data = response.json()
-    # Extract the text from the response (adjust if API response format changes)
-    return data["content"][0]["text"].strip()
+    try:
+        response = requests.post(
+            "https://api.anthropic.com/v1/messages",
+            headers={
+                "x-api-key": ANTHROPIC_API_KEY,
+                "anthropic-version": "2023-06-01",
+                "content-type": "application/json"
+            },
+            json={
+                "model": "claude-3-haiku-20240307",
+                "max_tokens": 256,
+                "messages": [
+                    {"role": "user", "content": prompt}
+                ]
+            }
+        )
+        response.raise_for_status()
+        data = response.json()
+        return data["content"][0]["text"].strip()
+    except requests.exceptions.RequestException as e:
+        print(f"Request error: {e}")
+        raise Exception("Error contacting Anthropic API.")
+    except ValueError:
+        print("Error parsing response.")
+        raise Exception("Invalid response format from API.")
 
 @app.route('/find_subreddits', methods=['POST'])
 def find_subreddits():

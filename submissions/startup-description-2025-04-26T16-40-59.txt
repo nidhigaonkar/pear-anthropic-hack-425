@@ -1,0 +1,5 @@
+Startup Description
+
+PulseNest is an AI-powered platform designed to help organizations proactively manage employee well-being and prevent burnout. By seamlessly integrating with workplace tools like Slack, Google Workspace, and project management apps, PulseNest analyzes team communication patterns, workload, and engagement levels. The platform provides real-time insights and personalized recommendations for managers and employees, helping teams identify stressors early and take actionable steps to improve work-life balance. PulseNest also offers wellness resources, automated check-ins, and pulse surveys to foster a supportive culture. Perfect for distributed teams and fast-growing startups, PulseNest empowers companies to boost productivity while prioritizing mental health and employee satisfaction.
+
+Submitted on: 2025-04-26T16:40:59.181311

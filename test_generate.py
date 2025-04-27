@@ -2,7 +2,6 @@ import os
 from unittest.mock import patch, MagicMock
 import sys
 import generate
-
 import glob
 
 def get_latest_file(pattern):
