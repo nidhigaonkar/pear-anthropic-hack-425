@@ -7,11 +7,11 @@ from prawcore.exceptions import RequestException, ResponseException
 
 #Creating the Reddit instance
 reddit = praw.Reddit(
-    client_id="SITjwfe4soiIOutFoo5SfA",
-    client_secret="Fc7wjMbrt2FL4DFfYhWGWUj5aS_ljA",
-    username="Cute_Philosopher_745",
-    password="a1b2c3d4",
-    user_agent="script:your_app_name:v1.0 (by /u/Cute_Philosopher_745)"
+    client_id="",
+    client_secret="",
+    username="",
+    password="",
+    user_agent=""
 )
 
 print(reddit.user.me())
