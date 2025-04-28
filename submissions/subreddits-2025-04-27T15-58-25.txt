@@ -1,0 +1,10 @@
+r/MachineLearning
+r/artificialinteligence
+r/datascience
+r/programming
+r/startups
+r/enterpriseit
+r/businessintelligence
+r/ProductManagement
+r/DataEngineering
+r/Entrepreneur

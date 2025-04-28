@@ -1,0 +1,10 @@
+r/artificial_intelligence
+r/machinelearning
+r/programming
+r/datascience
+r/startups
+r/business
+r/tech
+r/aidev
+r/deeplearning
+r/bigdata

@@ -1,0 +1,10 @@
+r/MachineLearning
+r/artificial
+r/DataScience
+r/programming
+r/startups
+r/ArtificialIntelligence
+r/analytics
+r/learnmachinelearning
+r/computervision
+r/nlproc

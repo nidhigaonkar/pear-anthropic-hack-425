@@ -1,0 +1,10 @@
+r/MachineLearning
+r/ArtificialIntelligence
+r/DataScience
+r/Programming
+r/startups
+r/technews
+r/technology
+r/CorporateTraining
+r/BusinessIntelligence
+r/ProductManagement

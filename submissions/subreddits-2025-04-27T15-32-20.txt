@@ -1,0 +1,10 @@
+r/MachineLearning
+r/ArtificialIntelligence
+r/DataScience
+r/programming
+r/startups
+r/BusinessAnalysis
+r/SoftwareEngineering
+r/tech
+r/LargeLanguageModels
+r/AIResearch

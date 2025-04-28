@@ -1,0 +1,11 @@
+Startup Description
+
+EcoCart is an innovative San Francisco-based startup founded in 2019 that seamlessly integrates carbon emissions software with e-commerce platforms. Their technology allows shoppers to select carbon-neutral checkout options while shopping at major retailers like Walmart and others.
+
+The company's unique algorithm calculates the carbon footprint of shipping for each purchase, then enables customers to offset these emissions. According to their internal data, this approach delivers impressive business results: 10% higher average order values, 15% higher repurchase rates, and 14% higher cart conversion rates.
+
+Since its founding, EcoCart claims to have offset 4 million pounds of carbon dioxide emissions, saved more than 8,000 trees, and helped power over 700 homes. Their browser extension makes it simple for consumers to make environmentally conscious choices without changing their shopping habits.
+
+Website: ecocart.io
+
+Submitted on: 2025-04-26T19:06:59.587909

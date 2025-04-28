@@ -92,16 +92,5 @@ def find_subreddits():
         return jsonify({'success': True, 'subreddits': subreddits.splitlines(), 'filename': filename})
     except Exception as e:
         return jsonify({'success': False, 'message': str(e)}), 500
-
-@app.route('/comment_history', methods=['GET'])
-def get_comment_history():
-    try:
-        # Import the comment history from generate module
-        from generate import get_comment_history
-        comments = get_comment_history()
-        return jsonify({'success': True, 'comments': comments})
-    except Exception as e:
-        return jsonify({'success': False, 'message': str(e)}), 500
-
 if __name__ == '__main__':
     app.run(debug=True)

@@ -1,4 +1,5 @@
 from anthropic import Anthropic
+from prawcore import NotFound
 import praw
 import os
 import time
@@ -7,20 +8,24 @@ from prawcore.exceptions import RequestException, ResponseException
 
 #Creating the Reddit instance
 reddit = praw.Reddit(
-    client_id="",
-    client_secret="",
-    username="",
-    password="",
-    user_agent=""
+    client_id=os.environ.get("CLIENT_ID"),
+    client_secret=os.environ.get("CLIENT_SECRET"),
+    username=os.environ.get("GENERATE_USERNAME"),
+    password=os.environ.get("GENERATE_PASSWORD"),
+    user_agent="script:your_app_name:v1.0 (by /u/Cute_Philosopher_745)",
+    ratelimit_seconds=900
 )
 
 print(reddit.user.me())
 
-comment_history = []
+def sub_exists(sub):
+    exists = True
+    try:
+        reddit.subreddits.search_by_name(sub, exact=True)
+    except NotFound:
+        exists = False
+    return exists
 
-# Add this function to generate.py
-def get_comment_history():
-    return comment_history
 
 def get_latest_file(pattern):
    files = glob.glob(pattern)
@@ -96,6 +101,8 @@ def generate_reply(post_title, post_content, subreddit_name):
         system="Generate helpful, human-sounding, and authentic-sounding Reddit comments that subtly mention the product only when relevant.",
         messages=[{"role": "user", "content": prompt}]
     )
+
+    print("About to return")
     
     return response.content[0].text
 
@@ -103,12 +110,15 @@ def reply_and_post(subreddit_list):
     for subreddit_name in subreddit_list:
         print(f"\nProcessing subreddit: {subreddit_name}")
         subreddit = reddit.subreddit(subreddit_name)
+        if (not sub_exists(subreddit)):
+            continue
         
         # Get 200 most recent posts
         posts_to_process = []
-        for submission in subreddit.new(limit=1):
+        for submission in subreddit.new(limit=10):
             if submission.id not in posts_replied_to:
                 posts_to_process.append(submission)
+                print(submission)
         
         print(f"Found {len(posts_to_process)} new posts to analyze")
         
@@ -128,19 +138,8 @@ def reply_and_post(subreddit_list):
                 reply_text = generate_reply(submission.title, submission.selftext, subreddit_name)
                     
                 # Post the reply
-                comment = submission.reply(reply_text)
                 submission.reply(reply_text)
                 print(f"Replied to: {submission.title}")
-
-                # Record this comment in our history
-                comment_info = {
-                    "subreddit": subreddit_name,
-                    "post_title": submission.title,
-                    "post_url": submission.url,
-                    "comment_url": f"https://reddit.com{comment.permalink}",
-                    "timestamp": time.time()
-                }
-                comment_history.append(comment_info)
                     
                 # Remember we replied to this post
                 posts_replied_to.append(submission.id)
@@ -151,8 +150,8 @@ def reply_and_post(subreddit_list):
                         f.write(post_id + "\n")
                     
                 # Wait 5 minutes between comments to avoid rate limits
-                print("Waiting 2 minutes before next comment...")
-                time.sleep(300)  # 5 minutes
+                print("Waiting 1 minute before next comment...")
+                time.sleep(60)  # 5 minutes
                 
             except Exception as e:
                 if "RATELIMIT" in str(e):
