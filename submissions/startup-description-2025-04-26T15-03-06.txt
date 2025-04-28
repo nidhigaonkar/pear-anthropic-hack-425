@@ -1,5 +1,0 @@
-Startup Description
-
-We’re building Taskly, a smart productivity platform designed for remote teams. Taskly automatically organizes your daily tasks, integrates with your favorite tools like Slack and Google Calendar, and uses AI to suggest the most efficient work schedule based on your habits. Our goal is to help remote workers stay focused, reduce burnout, and get more done-without the overwhelm. Taskly is perfect for startups and distributed teams who want to boost productivity and maintain a healthy work-life balance.
-
-Submitted on: 2025-04-26T15:03:06.429265

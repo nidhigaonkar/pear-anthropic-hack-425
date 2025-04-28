@@ -1,5 +1,0 @@
-r/government
-r/GovContracts
-r/government_job
-r/militaryprocurement
-r/defense_contractors

@@ -1,5 +1,0 @@
-r/MachineLearning
-r/ArtificialIntelligence
-r/learnmachinelearning
-r/programming
-r/startups
